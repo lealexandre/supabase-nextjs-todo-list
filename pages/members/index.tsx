@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react'
 import { Auth, ThemeSupa } from '@supabase/auth-ui-react'
-import TodoList from '@/components/TodoList'
+import TodoList from '@/components/TodoListMember'
 
 export default function Home() {
   const session = useSession()
@@ -16,7 +16,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="w-full h-full bg-200">
-        {!session ? (
+        {/* {!session ? ( */}
           <div className="min-w-full min-h-screen flex items-center justify-center">
             <div className="w-full h-full flex justify-center items-center p-4">
               <div className="w-full h-full sm:h-auto sm:w-2/5 max-w-sm p-5 bg-white shadow flex flex-col text-base">
@@ -30,23 +30,14 @@ export default function Home() {
               </div>
             </div>
           </div>
-        ) : (
+        {/* ) : ( */}
           <div
             className="w-full h-full flex flex-col justify-center items-center p-4"
             style={{ minWidth: 250, maxWidth: 600, margin: 'auto' }}
           >
-            <TodoList session={session} />
-            <button
-              className="btn-black w-full mt-12"
-              onClick={async () => {
-                const { error } = await supabase.auth.signOut()
-                if (error) console.log('Error logging out:', error.message)
-              }}
-            >
-              Logout
-            </button>
+            <TodoList code="" />
           </div>
-        )}
+        {/* )} */}
       </div>
     </>
   )

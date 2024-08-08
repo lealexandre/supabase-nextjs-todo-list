@@ -4,60 +4,37 @@ import { useEffect, useState } from 'react'
 
 type Todos = Database['public']['Tables']['todos']['Row']
 
-export default function TodoList({ session }: { session: Session }) {
+export default function TodoListMember({ code }: any) {
   const supabase = useSupabaseClient<Database>()
   const [todos, setTodos] = useState<Todos[]>([])
   const [newTaskText, setNewTaskText] = useState('')
   const [errorText, setErrorText] = useState('')
 
-  const user = session.user
 
   useEffect(() => {
     const fetchTodos = async () => {
-      const { data: todos, error } = await supabase
-        .from('todos')
-        .select('*')
-        .order('id', { ascending: true })
+      // const { data: todos, error } = await supabase
+      //   .from('todos')
+      //   .select('*')
+      //   .order('id', { ascending: true })
 
-      if (error) console.log('error', error)
-      else setTodos(todos)
+      // if (error) console.log('error', error)
+      // else setTodos(todos)
     
+      const { data, error } = await supabase.rpc('has_taskAccess', { code: 'ABCDEFG' })
+    if (error) console.error(error)
+    else console.log(data)
+
     }
 
     fetchTodos()
   }, [supabase])
 
-  const addTodo = async (taskText: string) => {
-    let task = taskText.trim()
-    if (task.length) {
-      const { data: todo, error } = await supabase
-        .from('todos')
-        .insert({ task, user_id: user.id })
-        .select()
-        .single()
-
-      if (error) {
-        setErrorText(error.message)
-      } else {
-        setTodos([...todos, todo])
-        setNewTaskText('')
-      }
-    }
-  }
-
-  const deleteTodo = async (id: number) => {
-    try {
-      await supabase.from('todos').delete().eq('id', id).throwOnError()
-      setTodos(todos.filter((x) => x.id != id))
-    } catch (error) {
-      console.log('error', error)
-    }
-  }
 
   return (
     <div className="w-full">
       <h1 className="mb-12">Todo List.</h1>
-      <form
+      {/* <form
         onSubmit={(e) => {
           e.preventDefault()
           addTodo(newTaskText)
@@ -77,15 +54,8 @@ export default function TodoList({ session }: { session: Session }) {
         <button className="btn-black" type="submit">
           Add
         </button>
-      </form>
-      {!!errorText && <Alert text={errorText} />}
-      <div className="bg-white shadow overflow-hidden rounded-md">
-        <ul>
-          {todos.map((todo) => (
-            <Todo key={todo.id} todo={todo} onDelete={() => deleteTodo(todo.id)} />
-          ))}
-        </ul>
-      </div>
+      </form> */}
+
     </div>
   )
 }

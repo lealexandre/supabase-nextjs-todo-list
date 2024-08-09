@@ -37,7 +37,7 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      [_ in string]: any
     }
     Enums: {
       [_ in never]: never

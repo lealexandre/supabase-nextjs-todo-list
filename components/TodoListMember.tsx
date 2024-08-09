@@ -21,9 +21,11 @@ export default function TodoListMember({ code }: any) {
       // if (error) console.log('error', error)
       // else setTodos(todos)
     
-      const { data, error } = await supabase.rpc('has_taskAccess', { code: 'ABCDEFG' })
-    if (error) console.error(error)
-    else console.log(data)
+
+      const { data, error } = await supabase.rpc('get_todos_by_code' , { code: 'ABCDEFG' }) //   
+     if (error) console.error("RPC Error: " ,error)
+      else console.log(data)
+
 
     }
 
